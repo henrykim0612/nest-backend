@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import {HttpExceptionFilter} from "./http.exception.filter";
+import {ValidationPipe} from "@nestjs/common";
 
 declare const module: any;
 
@@ -11,7 +13,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 3000;
   console.log(`Listening on port ${port}`);
-
+  // Global
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new HttpExceptionFilter());
   // Swagger config
   const config = new DocumentBuilder()
     .setTitle('Henry API')

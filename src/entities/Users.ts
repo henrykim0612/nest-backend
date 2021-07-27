@@ -18,20 +18,37 @@ import { Mentions } from './Mentions';
 import { WorkspaceMembers } from './WorkspaceMembers';
 import { Workspaces } from './Workspaces';
 import dotenv from 'dotenv';
+import {ApiProperty} from "@nestjs/swagger";
 
 dotenv.config();
 @Index('email', ['email'], { unique: true })
 @Entity({ schema: process.env.DB_DATABASE, name: 'users' })
 export class Users {
+
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @ApiProperty({
+    example: 'hyeongjong90@gmail.com',
+    description: 'Email',
+    required: true
+  })
   @Column('varchar', { name: 'email', unique: true, length: 30 })
   email: string;
 
+  @ApiProperty({
+    example: 'hyeongjong90@gmail.com',
+    description: 'Nickname',
+    required: true
+  })
   @Column('varchar', { name: 'nickname', length: 30 })
   nickname: string;
 
+  @ApiProperty({
+    example: 'hyeongjong90@gmail.com',
+    description: 'Password',
+    required: true
+  })
   @Column('varchar', { name: 'password', length: 100, select: false })
   password: string;
 

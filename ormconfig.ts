@@ -35,7 +35,7 @@ const ormConfig: TypeOrmModuleOptions = {
   cli: { migrationsDir: 'src/migrations' },
   autoLoadEntities: true,
   charset: 'utf8mb4',
-  synchronize: true, // 이거는 개발 환경인 경우에만(한번 true 로 해서 테이블을 자동으로 만들어 주면 false 로 바꾸는게 안전..)
+  synchronize: false, // 이거는 개발 환경인 경우에만(한번 true 로 해서 테이블을 자동으로 만들어 주면 false 로 바꾸는게 안전..)
   logging: true,
   keepConnectionAlive: true,
 };
