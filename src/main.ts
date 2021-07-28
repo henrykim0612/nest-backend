@@ -39,8 +39,7 @@ async function bootstrap() {
     }),
   );
   app.use(passport.initialize());
-  app.use(passport.session());
-
+  app.use(passport.session()); // 만약 JWT 기반이라면 필요없음
 
   await app.listen(port);
   if (module.hot) {

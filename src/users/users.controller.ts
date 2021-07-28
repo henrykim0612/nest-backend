@@ -1,10 +1,13 @@
-import {Body, Controller, Get, Post, Req, Res, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Get, Post, Req, Res, UseGuards, UseInterceptors} from '@nestjs/common';
 import { JoinRequestDto } from './dto/join.request.dto'
 import {UsersService} from "./users.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserDto} from "../common/dto/user.dto";
 import {UserCustomDecorator} from "../common/decorators/user.decorator";
 import {UndefinedToNullInterceptor} from "../common/interceptors/undefinedToNull.interceptor";
+import {LocalAuthGuard} from "../auth/local.auth.guard";
+import {NotLoggedInGuard} from "../auth/not.logged.in.guard";
+import {LoggedInGuard} from "../auth/logged.in.guard";
 
 @UseInterceptors(UndefinedToNullInterceptor) // 이 컨트롤러에 인터셉터 장착
 @ApiTags('User')
@@ -24,6 +27,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: '회원가입' })
+  @UseGuards(NotLoggedInGuard)
   @Post()
   async postUsers(@Body() body: JoinRequestDto) {
     await this.userService.join(body.email, body.nickname, body.password);
@@ -39,12 +43,14 @@ export class UsersController {
     status: 500,
     description: 'Server error',
   })
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   logIn(@UserCustomDecorator() user) {
     return user;
   }
 
   @ApiOperation({ summary: '로그아웃' })
+  @UseGuards(LoggedInGuard)
   @Post('logout')
   logOut(@Req() req, @Res() res) {
     req.logOut();

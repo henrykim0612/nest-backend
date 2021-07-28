@@ -49,7 +49,7 @@ export class Users {
     description: 'Password',
     required: true
   })
-  @Column('varchar', { name: 'password', length: 100, select: false })
+  @Column('varchar', { name: 'password', length: 100, select: false }) // select: false 하면 기본으로 조회할 컬럼에서 제외됨
   password: string;
 
   @CreateDateColumn()
