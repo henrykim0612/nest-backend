@@ -17,6 +17,8 @@ import { Mentions } from './Mentions';
 import { WorkspaceMembers } from './WorkspaceMembers';
 import { Users } from './Users';
 import dotenv from 'dotenv';
+import {ApiProperty} from "@nestjs/swagger";
+import {IsNotEmpty, IsString} from "class-validator";
 
 dotenv.config();
 @Index('name', ['name'], { unique: true })
@@ -30,6 +32,12 @@ export class Workspaces {
   @Column('varchar', { name: 'name', unique: true, length: 30 })
   name: string;
 
+  @ApiProperty({
+    example: 'Test',
+    description: 'URL',
+  })
+  @IsString()
+  @IsNotEmpty()
   @Column('varchar', { name: 'url', unique: true, length: 30 })
   url: string;
 

@@ -34,21 +34,22 @@ export class UsersService {
     await queryRunner.startTransaction();
     try {
       // 사용자 저장
-      const insertedUser = await queryRunner.manager.save(Users, {
-        email,
-        nickname,
-        password: hashedPassword,
-      });
+      const user = new Users();
+      user.email = email;
+      user.nickname = nickname;
+      user.password = hashedPassword;
+      const insertedUser = await queryRunner.manager.save(user);
       // 생성된 사용자의 워크스페이스 생성
-      await queryRunner.manager.save(WorkspaceMembers, {
-        WorkspaceId: 1,
-        UserId: insertedUser.id,
-      });
+      const workspaceMember = new WorkspaceMembers();
+      workspaceMember.WorkspaceId = 1;
+      workspaceMember.UserId = insertedUser.id;
+      await queryRunner.manager.save(workspaceMember);
       // 생성된 사용자의 채널 생성
-      await queryRunner.manager.save(ChannelMembers, {
-        ChannelId: 1,
-        UserId: insertedUser.id,
-      });
+      const channelMember = new ChannelMembers();
+      channelMember.ChannelId = 1;
+      channelMember.UserId = insertedUser.id;
+      await queryRunner.manager.save(channelMember);
+      // Commit
       await queryRunner.commitTransaction();
     } catch (err) {
       console.log('Rollback 실행..')
