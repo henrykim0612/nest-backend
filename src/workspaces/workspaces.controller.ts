@@ -1,9 +1,9 @@
 import {Body, Controller, Delete, Get, Injectable, Param, ParseIntPipe, Post} from '@nestjs/common';
 import {ApiTags} from "@nestjs/swagger";
 import {WorkspacesService} from "./workspaces.service";
-import {UserCustomDecorator} from "../common/decorators/user.decorator";
 import {Users} from "../entities/Users";
-import {CreateWorkspaceDto} from "./dto/create.workspace.dto";
+import {UserCustomDecorator} from "../common/decorators/user-decorator";
+import {CreateWorkspaceDto} from "./dto/create-workspace.dto";
 
 @ApiTags('Workspace')
 @Controller('api/workspaces')

@@ -9,8 +9,8 @@ import { ChannelsModule } from './channels/channels.module';
 import { DmsModule } from './dms/dms.module';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import * as ormConfig from './ormconfig';
-import {Users} from "./entities/Users";
 import {AuthModule} from "./auth/auth.module";
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -23,7 +23,8 @@ import {AuthModule} from "./auth/auth.module";
     ChannelsModule,
     DmsModule,
     TypeOrmModule.forRoot(ormConfig),
-    TypeOrmModule.forFeature([Users]),
+    EventsModule,
+    // TypeOrmModule.forFeature([Users]),
   ],
   controllers: [AppController],
   providers: [AppService],

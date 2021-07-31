@@ -16,7 +16,7 @@ export class WorkspacesService {
     @InjectRepository(Channels)
     private channelsRepository: Repository<Channels>,
     @InjectRepository(WorkspaceMembers)
-    private workspacesMemberRepository: Repository<WorkspaceMembers>,
+    private workspaceMembersRepository: Repository<WorkspaceMembers>,
     @InjectRepository(ChannelMembers)
     private channelMembersRepository: Repository<ChannelMembers>,
     @InjectRepository(Users)
@@ -80,9 +80,45 @@ export class WorkspacesService {
   async getWorkspaceMembers(url: string) {
     return await this.usersRepository
       .createQueryBuilder('users')
-      .innerJoin('user.WorkspaceMembers', 'members')
+      .innerJoin('user.WorkspaceMembers', 'members') // innerJoinAndSelect 과의 차이점은 innerJoin 을 쓸 경우에는 필터링만 하지 조인된 컬럼을 조회하지 않음
       .innerJoin('members.Workspace', 'workspace', 'workspace.url = :url', { url })
       .getMany();
   }
 
+  async createWorkspaceMembers(url, email) {
+    const workspace = await this.workspacesRepository.findOne({
+      where: { url },
+      // relations: ['Channels'] // join 대신 이렇게 해도됨
+      join: {
+        alias: 'workspace',
+        innerJoinAndSelect: {
+          channels: 'workspace.Channels',
+        },
+      },
+    });
+    const user = await this.usersRepository.findOne({ where: { email } });
+    if (!user) {
+      return null;
+    }
+    const workspaceMember = new WorkspaceMembers();
+    workspaceMember.WorkspaceId = workspace.id;
+    workspaceMember.UserId = user.id;
+    await this.workspaceMembersRepository.save(workspaceMember);
+    const channelMember = new ChannelMembers();
+    channelMember.ChannelId = workspace.Channels.find(
+      (v) => v.name === '일반',
+    ).id;
+    channelMember.UserId = user.id;
+    await this.channelMembersRepository.save(channelMember);
+  }
+
+  async getWorkspaceMember(url: string, id: number) {
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .innerJoin('user.Workspaces', 'workspaces', 'workspaces.url = :url', {
+        url,
+      })
+      .getOne();
+  }
 }

@@ -1,13 +1,13 @@
 import {Body, Controller, Get, Post, Req, Res, UseGuards, UseInterceptors} from '@nestjs/common';
-import { JoinRequestDto } from './dto/join.request.dto'
+import { JoinRequestDto } from './dto/join-request.dto'
 import {UsersService} from "./users.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserDto} from "../common/dto/user.dto";
-import {UserCustomDecorator} from "../common/decorators/user.decorator";
-import {UndefinedToNullInterceptor} from "../common/interceptors/undefinedToNull.interceptor";
-import {LocalAuthGuard} from "../auth/local.auth.guard";
-import {NotLoggedInGuard} from "../auth/not.logged.in.guard";
-import {LoggedInGuard} from "../auth/logged.in.guard";
+import {UndefinedToNullInterceptor} from "../common/interceptors/undefined-to-null.interceptor";
+import {UserCustomDecorator} from "../common/decorators/user-decorator";
+import {NotLoggedInGuard} from "../auth/not-logged-in.guard";
+import {LocalAuthGuard} from "../auth/local-auth.guard";
+import {LoggedInGuard} from "../auth/logged-in.guard";
 
 @UseInterceptors(UndefinedToNullInterceptor) // 이 컨트롤러에 인터셉터 장착
 @ApiTags('User')

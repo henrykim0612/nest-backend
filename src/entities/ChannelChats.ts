@@ -11,6 +11,8 @@ import {
 import { Users } from './Users';
 import { Channels } from './Channels';
 import dotenv from 'dotenv';
+import {IsNotEmpty, IsString} from "class-validator";
+import {ApiProperty} from "@nestjs/swagger";
 
 dotenv.config();
 @Index('UserId', ['UserId'], {})
@@ -21,6 +23,12 @@ export class ChannelChats {
   id: number;
 
   @Column('text', { name: 'content' })
+  @ApiProperty({
+    example: 'Hello',
+    description: 'Message',
+  })
+  @IsNotEmpty()
+  @IsString()
   content: string;
 
   @CreateDateColumn()

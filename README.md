@@ -45,6 +45,12 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Build and Production
+```bash
+npm run build
+npm run start:prod
+```
+
 ## Test
 
 ```bash

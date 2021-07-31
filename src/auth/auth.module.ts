@@ -4,8 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Users } from '../entities/Users';
 import { AuthService } from './auth.service';
-import { LocalSerializer } from './local.serializer';
-import { LocalStrategy } from './local.strategy';
+import { LocalSerializer } from './local-serializer';
+import { LocalStrategy } from './local-strategy';
 
 @Module({
   imports: [
